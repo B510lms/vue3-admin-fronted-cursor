@@ -1,5 +1,15 @@
 @use './reset.scss';
 
+:root {
+  --app-bg-color: #f5f7fa;
+  --app-text-color: #303133;
+}
+
+html.dark {
+  --app-bg-color: #141414;
+  --app-text-color: #e5eaf3;
+}
+
 html,
 body,
 #app {

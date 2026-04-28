@@ -20,6 +20,12 @@ export const constantRoute: RouteRecordRaw[] = [
     ],
   },
   {
+    path: '/screen',
+    name: 'screen',
+    component: () => import('@/views/screen/index.vue'),
+    meta: { title: '数据大屏', icon: 'DataBoard' },
+  },
+  {
     path: '/404',
     name: '404',
     component: () => import('@/views/404/index.vue'),

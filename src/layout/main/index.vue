@@ -11,7 +11,7 @@
 .main {
   flex: 1;
   padding: 20px;
-  background-color: #f5f7fa;
+  background-color: var(--app-bg-color);
   overflow: auto;
 }
 </style>

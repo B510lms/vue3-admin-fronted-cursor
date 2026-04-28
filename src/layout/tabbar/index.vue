@@ -42,12 +42,33 @@
         </el-button>
       </el-tooltip>
 
+      <el-popover trigger="hover" placement="bottom" :width="240" popper-class="theme-popover">
+        <template #reference>
+          <el-button class="tabbar__iconbtn" text>
+            <el-icon :size="18">
+              <component :is="appStore.themeMode === 'dark' ? Sunny : Moon" />
+            </el-icon>
+          </el-button>
+        </template>
+        <div class="theme-panel">
+          <div class="theme-panel__row">
+            <span>主题颜色</span>
+            <el-color-picker :model-value="appStore.primaryColor" @update:model-value="appStore.setPrimaryColor"
+              :teleported="false" />
+          </div>
+          <div class="theme-panel__row">
+            <span>暗黑模式</span>
+            <el-switch v-model="isDark" />
+          </div>
+        </div>
+      </el-popover>
+
       <el-dropdown @command="handleCommand">
         <div class="tabbar__user">
           <el-avatar :size="32" :src="userStore.avatar || undefined">
-            {{ userStore.username.slice(0, 1) }}
+            {{ (userStore.username || 'A').slice(0, 1) }}
           </el-avatar>
-          <span class="tabbar__username">{{ userStore.username }}</span>
+          <span class="tabbar__username">{{ userStore.username || '管理员' }}</span>
           <el-icon>
             <ArrowDown />
           </el-icon>
@@ -67,13 +88,17 @@ import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import useUserStore from '@/store/modules/user'
 import { useAppStore } from '@/store/modules/app'
-import { ArrowDown, Expand, Fold, FullScreen, Refresh } from '@element-plus/icons-vue'
+import { ArrowDown, Expand, Fold, FullScreen, Refresh, Moon, Sunny } from '@element-plus/icons-vue'
 import * as ElIcons from '@element-plus/icons-vue'
 
 const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 const appStore = useAppStore()
+const isDark = computed({
+  get: () => appStore.themeMode === 'dark',
+  set: (val: boolean) => appStore.setThemeMode(val ? 'dark' : 'light'),
+})
 
 const breadList = computed(() => {
   const matched = route.matched.filter((r) => r.meta?.title && r.path !== '/login')
@@ -121,8 +146,9 @@ const handleCommand = async (command: any) => {
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
-  border-bottom: 1px solid #eee;
-  background: #fff;
+  border-bottom: 1px solid var(--el-border-color-light);
+  background: var(--el-bg-color);
+  color: var(--app-text-color);
 
   &__left,
   &__right {
@@ -170,11 +196,33 @@ const handleCommand = async (command: any) => {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  color: #303133;
+  color: var(--app-text-color);
   text-decoration: none;
 
   &__icon {
     font-size: 14px;
+  }
+}
+
+.crumb-item:hover {
+  color: var(--el-color-primary);
+}
+
+:deep(.theme-popover) {
+  padding: 12px 14px;
+}
+
+.theme-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: var(--app-text-color);
+    font-size: 13px;
   }
 }
 </style>
