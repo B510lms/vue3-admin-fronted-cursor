@@ -56,7 +56,6 @@ const useUserStore = defineStore('User', {
           ;[...userAsyncRoute, anyRoute].forEach((route: any) => {
             router.addRoute(route)
           })
-        console.log(this.menuRoutes)
 
         return 'ok'
       } else {

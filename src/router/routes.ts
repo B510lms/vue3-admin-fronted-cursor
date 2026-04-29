@@ -33,12 +33,6 @@ export const constantRoute: RouteRecordRaw[] = [
   },
 ]
 
-export const anyRoute: RouteRecordRaw = {
-  path: '/:pathMatch(.*)*',
-  name: 'any',
-  redirect: '/404',
-}
-
 export const asyncRoute: RouteRecordRaw[] = [
   {
     path: '/acl',
@@ -75,6 +69,18 @@ export const asyncRoute: RouteRecordRaw[] = [
     meta: { title: '商品管理', icon: 'Goods' },
     children: [
       {
+        path: 'trademark',
+        name: 'Trademark',
+        component: () => import('@/views/product/trademark/index.vue'),
+        meta: { title: '品牌管理', icon: 'List' },
+      },
+      {
+        path: 'attr',
+        name: 'Attr',
+        component: () => import('@/views/product/attr/index.vue'),
+        meta: { title: '属性管理', icon: 'List' },
+      },
+      {
         path: 'spu',
         name: 'Spu',
         component: () => import('@/views/product/spu/index.vue'),
@@ -86,18 +92,12 @@ export const asyncRoute: RouteRecordRaw[] = [
         component: () => import('@/views/product/sku/index.vue'),
         meta: { title: 'SKU管理', icon: 'Collection' },
       },
-      {
-        path: 'attr',
-        name: 'Attr',
-        component: () => import('@/views/product/attr/index.vue'),
-        meta: { title: '属性管理', icon: 'List' },
-      },
-      {
-        path: 'trademark',
-        name: 'Trademark',
-        component: () => import('@/views/product/trademark/index.vue'),
-        meta: { title: '品牌管理', icon: 'List' },
-      },
     ],
   },
 ]
+
+export const anyRoute: RouteRecordRaw = {
+  path: '/:pathMatch(.*)*',
+  name: 'any',
+  redirect: '/404',
+}
