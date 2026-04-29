@@ -60,21 +60,44 @@
       <el-button type="primary" @click="save">确认</el-button>
     </template>
   </el-drawer>
+  <el-drawer v-model="drawerRole" title="分配角色">
+    <el-form>
+      <el-form-item label="用户名称:">
+        <el-input v-model="UserParams.username" :disabled="true"></el-input>
+      </el-form-item>
+      <el-form-item label="分配角色:"">
+        <el-checkbox v-model="checkAll" :indeterminate="isIndeterminate"
+        @change="handleCheckAllChange">全部</el-checkbox>
+        <el-checkbox-group v-model="checkedRole" @change="handleCheckedRoleChange">
+          <el-checkbox v-for="item in allRole" :key="item.id" :value="item">
+            {{ item.roleName }}
+          </el-checkbox>
+        </el-checkbox-group>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button @click="drawerRole = false">取消</el-button>
+      <el-button type="primary" @click="confirmClick">确认</el-button>
+    </template>
+  </el-drawer>
 </template>
 
 <script setup lang="ts">
 import { onMounted, reactive, ref, nextTick } from 'vue'
-import { reqUser, reqAddOrUpdateUser, reqDeleteUser, reqBatchRemoveUser } from '@/api/acl/user'
-import type { UserResponseData, User, UserParams } from '@/api/acl/user/type'
+import { reqUser, reqAddOrUpdateUser, reqDeleteUser, reqBatchRemoveUser, reqGetRoleList, reqAssignRole } from '@/api/acl/user'
+import type { UserResponseData, User, UserParams, Role, GetRoleResopnse, AssignRoleParams } from '@/api/acl/user/type'
 import { ElMessage } from 'element-plus'
 
 const pageNo = ref<number>(1)
 const pageSize = ref<number>(3)
 const total = ref<number>(0)
 const drawerVisible = ref<boolean>(false)
+const drawerRole = ref<boolean>(false)
 const userList = ref<User[]>([])
 const selectedUserIds = ref<number[]>([])
 let formRef = ref<any>()
+let checkedRole = ref<Role[]>([])
+let allRole = ref<Role[]>([])
 
 const search = reactive({
   username: '',
@@ -170,6 +193,7 @@ const save = async () => {
   getHasUser(UserParams.id ? pageNo.value : 1)
 }
 
+// 删除
 const Delete = async (id: number) => {
   const result: any = await reqDeleteUser(id)
   if (result.code === 200) {
@@ -180,6 +204,7 @@ const Delete = async (id: number) => {
   }
 }
 
+// 批量删除
 const SelectedIds = (value: User[]) => {
   selectedUserIds.value = value.map(item => item.id) as number[]
 }
@@ -195,8 +220,44 @@ const BatchRemove = async () => {
   }
 }
 
-const Assign = (row: any) => {
-  console.log(row)
+// 分配角色
+import type { CheckboxValueType } from 'element-plus'
+const checkAll = ref(false)
+const isIndeterminate = ref(true)
+
+const handleCheckAllChange = (val: CheckboxValueType) => {
+  checkedRole.value = val ? allRole.value : []
+  isIndeterminate.value = false
+}
+const handleCheckedRoleChange = (value: CheckboxValueType[]) => {
+  const checkedCount = value.length
+  checkAll.value = checkedCount === allRole.value.length
+  isIndeterminate.value = checkedCount > 0 && checkedCount < allRole.value.length
+}
+
+const Assign = async (row: any) => {
+  Object.assign(UserParams, row)
+  const result: GetRoleResopnse = await reqGetRoleList(row.id)
+  if (result.code === 200) {
+    allRole.value = result.data.allRolesList
+    checkedRole.value = result.data.assignRoles
+  }
+  drawerRole.value = true
+}
+
+const confirmClick = async () => {
+  const assignRoleParams: AssignRoleParams = {
+    roleIdList: checkedRole.value.map(item => item.id) as number[],
+    userId: UserParams.id as number,
+  }
+  const result: any = await reqAssignRole(assignRoleParams)
+  if (result.code === 200) {
+    ElMessage({ type: 'success', message: '分配角色成功' })
+  } else {
+    ElMessage({ type: 'error', message: result.message ?? '分配角色失败' })
+  }
+  drawerRole.value = false
+  getHasUser(pageNo.value)
 }
 </script>
 
