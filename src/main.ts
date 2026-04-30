@@ -23,4 +23,6 @@ app.use(ElementPlus, {
 app.use(pinia)
 useAppStore().initTheme()
 app.use(router)
+import { isHasButton } from '@/directive/has'
+isHasButton(app)
 app.mount('#app')

@@ -12,7 +12,7 @@
     </el-form>
   </el-card>
   <el-card style="margin-top: 10px;">
-    <el-button type="primary" icon="Plus" @click="AddRole">添加角色</el-button>
+    <el-button type="primary" icon="Plus" @click="AddRole" v-has="'btn.Role.add'">添加角色</el-button>
     <el-table border style="margin: 10px 0;" :data="roleList">
       <el-table-column type="index" label="序号" width="55" align="center"></el-table-column>
       <el-table-column label="ID" prop="id" align="center"></el-table-column>
@@ -21,11 +21,12 @@
       <el-table-column label="更新时间" prop="updateTime" show-overflow-tooltip align="center"></el-table-column>
       <el-table-column label="操作" width="280" align="center">
         <template #="{ row }">
-          <el-button type="primary" size="small" icon="User" @click="Assign(row)">分配权限</el-button>
-          <el-button type="primary" size="small" icon="Edit" @click="Edit(row)">编辑</el-button>
+          <el-button type="primary" size="small" icon="User" @click="Assign(row)"
+            v-has="'btn.Role.assgin'">分配权限</el-button>
+          <el-button type="primary" size="small" icon="Edit" @click="Edit(row)" v-has="'btn.Role.update'">编辑</el-button>
           <el-popconfirm :title="`你确定要删除${row.roleName}吗？`" width="260px" @confirm="Delete(row.id)">
             <template #reference>
-              <el-button type="primary" size="small" icon="Delete">删除</el-button>
+              <el-button type="primary" size="small" icon="Delete" v-has="'btn.Role.remove'">删除</el-button>
             </template>
           </el-popconfirm>
         </template>
