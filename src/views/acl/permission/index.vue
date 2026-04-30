@@ -10,11 +10,11 @@
             v-has="'btn.Permission.add'">
             {{ row.level === 3 ? '添加功能' : '添加菜单' }}
           </el-button>
-          <el-button type="primary" size="small" icon="Edit" :disabled="row.level === 1" @click="Edit(row)"
+          <el-button type="warning" size="small" icon="Edit" :disabled="row.level === 1" @click="Edit(row)"
             v-has="'btn.Permission.update'">编辑</el-button>
-          <el-popconfirm :title="`你确定要删除${row.name}吗?`" @confirm="Delete(row)" width="260px">
+          <el-popconfirm :title="`你确定要删除[${row.name}]吗?`" @confirm="Delete(row)" width="260px">
             <template #reference>
-              <el-button type="primary" size="small" icon="Delete" :disabled="row.level === 1"
+              <el-button type="danger" size="small" icon="Delete" :disabled="row.level === 1"
                 v-has="'btn.Permission.remove'">删除</el-button>
             </template>
           </el-popconfirm>

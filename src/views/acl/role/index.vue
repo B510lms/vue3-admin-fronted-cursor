@@ -23,18 +23,18 @@
         <template #="{ row }">
           <el-button type="primary" size="small" icon="User" @click="Assign(row)"
             v-has="'btn.Role.assgin'">分配权限</el-button>
-          <el-button type="primary" size="small" icon="Edit" @click="Edit(row)" v-has="'btn.Role.update'">编辑</el-button>
-          <el-popconfirm :title="`你确定要删除${row.roleName}吗？`" width="260px" @confirm="Delete(row.id)">
+          <el-button type="warning" size="small" icon="Edit" @click="Edit(row)" v-has="'btn.Role.update'">编辑</el-button>
+          <el-popconfirm :title="`你确定要删除[${row.roleName}]吗？`" width="260px" @confirm="Delete(row.id)">
             <template #reference>
-              <el-button type="primary" size="small" icon="Delete" v-has="'btn.Role.remove'">删除</el-button>
+              <el-button type="danger" size="small" icon="Delete" v-has="'btn.Role.remove'">删除</el-button>
             </template>
           </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination v-model:current-page="pageNo" v-model:page-size="pageSize" :page-sizes="[5, 10, 15, 20]"
-      layout="prev, pager, next, jumper, ->, sizes, total" :total="total" @current-change="getHasRole"
-      @size-change="SizeChange" />
+      :background="true" layout="prev, pager, next, jumper, ->, sizes, total" :total="total"
+      @current-change="getHasRole" @size-change="SizeChange" />
   </el-card>
   <el-dialog v-model="dialogVisible" :title="RoleParams.id ? '更新角色' : '添加角色'">
     <el-form :model="RoleParams" :rules="rules" ref="formRef">
