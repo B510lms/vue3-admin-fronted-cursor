@@ -1,15 +1,6 @@
 <template>
-  <el-menu
-    class="menu"
-    router
-    :default-active="activePath"
-    :default-openeds="defaultOpeneds"
-    background-color="#001529"
-    text-color="#fff"
-    active-text-color="#ffd04b"
-    :collapse="appStore.sidebarCollapsed"
-    :collapse-transition="false"
-  >
+  <el-menu class="menu" router :default-active="activePath" background-color="#001529" text-color="#fff"
+    active-text-color="#ffd04b" :collapse="appStore.sidebarCollapsed" :collapse-transition="false">
     <MenuTree :menus="menuList" />
   </el-menu>
 </template>
@@ -48,8 +39,6 @@ const collectOpeneds = (menus: RouteRecordRaw[], basePath = ''): string[] => {
   })
   return result
 }
-
-const defaultOpeneds = computed(() => collectOpeneds(menuList.value))
 
 const MenuTree = defineComponent({
   name: 'MenuTree',
