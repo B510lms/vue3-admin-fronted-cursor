@@ -28,6 +28,7 @@ export interface Attr {
   categoryId: number | string
   categoryLevel: number
   attrValueList: AttrValue[]
+  attrIdAndValueId?: string
 }
 
 export interface AttrResponseData extends ResponseData {

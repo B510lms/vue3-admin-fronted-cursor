@@ -20,7 +20,7 @@ function filterAsyncRoute(asyncRoute: any, routes: any) {
   })
 }
 
-const useUserStore = defineStore('User', {
+export const useUserStore = defineStore('User', {
   state: (): UserState => ({
     token: GET_TOKEN(),
     username: '',

@@ -3,21 +3,21 @@
     <el-form :inline="true">
       <el-form-item label="一级分类">
         <el-select placeholder="请选择一级分类" style="width: 200px;" v-model="categoryStore.category1Id"
-          :disabled="scene === 1">
+          :disabled="scene === 0 ? false : true">
           <el-option v-for="item in categoryStore.category1List" :key="item.id" :label="item.name" :value="item.id"
             @click="handler1" />
         </el-select>
       </el-form-item>
       <el-form-item label="二级分类">
         <el-select placeholder="请选择二级分类" style="width: 200px;" v-model="categoryStore.category2Id"
-          :disabled="scene === 1">
+          :disabled="scene === 0 ? false : true">
           <el-option v-for="item in categoryStore.category2List" :key="item" :label="item.name" :value="item.id"
             @click="handler2" />
         </el-select>
       </el-form-item>
       <el-form-item label="三级分类">
         <el-select placeholder="请选择三级分类" style="width: 200px;" v-model="categoryStore.category3Id"
-          :disabled="scene === 1">
+          :disabled="scene === 0 ? false : true">
           <el-option v-for="item in categoryStore.category3List" :key="item" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
